@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Valentine's Question</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: rgb(245, 222, 225);
+            font-family: 'Quicksand', Arial, sans-serif;
+            font-weight: normal;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            font-size: clamp(20px, 5vw, 30px);
+            min-height: 100vh;
+            transition: background-color 0.8s ease;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 0px;
+            text-align: center;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .banner-gif {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .banner-gif img {
+            width: auto;
+            max-width: 100%;
+            height: clamp(150px, 30vw, 250px);
+            display: block;
+            margin: 0 auto;
+        }
+
+        h1 {
+            margin: 20px 0;
+            font-size: clamp(24px, 6vw, 48px);
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 60px;
+            
+            margin-top: 30px;
+            position: relative;
+            min-height: 60px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        button {
+            background-color: #E94D89;
+            color: white;
+            padding: 12px 40px;
+            border: none;
+            cursor: pointer;
+            font-size: clamp(14px, 3vw, 18px);
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 999px;
+            font-family: 'Quicksand', Arial, sans-serif;
+            position: relative;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        #noBtn {
+            margin-bottom: 20px;
+            margin-right: 0px;
+        
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        #yes-button {
+           z-index: 1;
+        }
+
+        #let {
+            display: none;
+            margin-top: 20px;
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message {
+            display: none;
+        }
+
+        /* Fade blur animation */
+        .fade-blur {
+            opacity: 0;
+            filter: blur(12px);
+            transform: scale(1.1);
+            transition: opacity 0.8s ease, filter 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-blur.show {
+            opacity: 1;
+            filter: blur(0);
+            transform: scale(1);
+        }
+
+        /* Letter section */
+        #letterWrap {
+            display: none;
+            position: relative;
+            width: 100%;
+            max-width: min(900px, 90vw);
+            margin: 0 auto;
+            animation: fadeInScale 0.8s ease forwards;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+                filter: blur(8px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+                filter: blur(0);
+            }
+        }
+
+        #imgl {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        #lets {
+            position: absolute;
+            top: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 65%;
+            font-size: clamp(12px, 2vw, 18px);
+            line-height: 1.6;
+            text-align: center;
+            color: #000;
+            font-weight: 600;
+            padding: 10px;
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            body {
+                font-size: 20px;
+            }
+
+            .buttons {
+                flex-direction: column;
+                gap: 15px;
+                min-height: 120px;
+            }
+
+            #noBtn {
+                position: relative;
+                left: 0;
+                transform: none;
+                margin-top: 10px;
+            }
+
+            button {
+                width: 100%;
+                max-width: 200px;
+                padding: 15px 30px;
+            }
+
+            #lets {
+                top: 12%;
+                width: 75%;
+                font-size: clamp(10px, 2.5vw, 16px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            #lets {
+                top: 10%;
+                width: 80%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="banner-gif">
+            <img id="banner" src="love_init.gif" alt="banner" />
+        </div>
+
+        <h1 id="question-heading">Do You Love me?</h1>
+        
+        <div class="buttons">
+            <button id="yes-button">Yes</button>
+            <button id="noBtn">No</button>
+        </div>
+        
+        <button id="let">Here's something for you 💌</button>
+
+        <div class="message">
+            <h2 id="success-message">Yepppie, see you sooonnn :3</h2>
+        </div>
+    </div>
+
+    <div id="letterWrap">
+        <img id="imgl" src="letter.png" alt="Letter">
+        <div id="lets">
+            Some people come into your life quietly, but their presence changes everything. You become the reason behind small smiles, calm thoughts, and hopeful dreams. <br><br>In a world that moves too fast, you feel like a pause—soft, warm, and comforting. Every little moment feels brighter, every ordinary day feels special, simply because you exist. This isn't just about love, it's about connection, trust, and the feeling of being understood without saying a word. You are not just a part of my story, you are the part that makes it beautiful. 💕
+        </div>
+    </div>
+
+    <script>
+        const noBtn = document.getElementById("noBtn");
+        const yesBtn = document.getElementById("yes-button");
+        const img = document.getElementById("banner");
+        const text = document.getElementById("question-heading");
+        const buttons = document.querySelector(".buttons");
+        const lett = document.getElementById("let");
+
+        // Mobile check
+        const isMobile = window.innerWidth <= 768;
+
+        if (!isMobile) {
+            // Desktop: button moves away on hover
+            let moveCount = 0;
+            const maxMoves = 5;
+
+            noBtn.addEventListener("mouseenter", moveButton);
+
+            function moveButton() {
+                
+
+                moveCount++;
+                
+                // Get viewport and button dimensions
+                const viewportWidth = window.innerWidth;
+                const viewportHeight = window.innerHeight;
+                const btnRect = noBtn.getBoundingClientRect();
+                
+                // Calculate safe zone (keeping button in viewport)
+                const margin = 50;
+                const maxX = viewportWidth - btnRect.width - margin;
+                const maxY = viewportHeight - btnRect.height - margin;
+                
+                // Random position within safe zone
+                const newX = Math.random() * (maxX - margin) + margin;
+                const newY = Math.random() * (maxY - margin) + margin;
+                
+                noBtn.style.position = "fixed";
+                noBtn.style.left = newX + "px";
+                noBtn.style.top = newY + "px";
+                noBtn.style.transform = "none";
+            }
+        } else {
+            // Mobile: show message on click
+            
+            
+        }
+
+        // Yes button click
+        yesBtn.addEventListener("click", () => {
+            // Button click animation
+            yesBtn.style.transform = "scale(0.9)";
+            
+            // Add blur to current content
+            img.classList.add("fade-blur");
+            text.classList.add("fade-blur");
+
+            setTimeout(() => {
+                yesBtn.style.transform = "scale(1)";
+            }, 150);
+
+            // Change content after delay
+            setTimeout(() => {
+                img.src = "milk-and-mocha.gif";
+                text.textContent = "I knew it 💖";
+                
+                // Hide buttons
+                yesBtn.style.display = "none";
+                noBtn.style.display = "none";
+
+                // Show new content
+                img.classList.add("show");
+                text.classList.add("show");
+            }, 700);
+
+            // Show letter button
+            setTimeout(() => {
+                lett.style.display = "block";
+            }, 1400);
+        });
+
+        // Letter button click
+        lett.addEventListener("click", () => {
+            lett.style.transform = "scale(0.9)";
+
+            setTimeout(() => {
+                // Hide main content
+                img.style.display = "none";
+                text.style.display = "none";
+                lett.style.display = "none";
+
+                // Show letter
+                document.getElementById("letterWrap").style.display = "block";
+                document.body.style.backgroundColor = "rgb(240, 198, 153)";
+            }, 300);
+        });
+    </script>
+</body>
+
+</html>
